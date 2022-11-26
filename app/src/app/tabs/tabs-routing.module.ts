@@ -12,8 +12,17 @@ const routes: Routes = [
         loadChildren: () => import('../tab1/tab1.module').then(m => m.Tab1PageModule)
       },
       {
+        path: 'camera',
+        loadChildren: () => import('../camera/camera.module').then(m => m.CameraPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
+        pathMatch: 'full'
+      },
+      {
+        path: '',
+        redirectTo: '/tabs/camera',
         pathMatch: 'full'
       }
     ]
@@ -21,6 +30,11 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: '/tabs/tab1',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    redirectTo: '/tabs/camera',
     pathMatch: 'full'
   }
 ];
