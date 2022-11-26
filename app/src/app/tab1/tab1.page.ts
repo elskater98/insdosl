@@ -42,7 +42,7 @@ export class Tab1Page implements OnInit, OnDestroy {
   }
 
   leafletMap() {
-    this.map = Leaflet.map('mapId').setView([41.608671, 0.6294213], 6);
+    this.map = Leaflet.map('mapId', {attributionControl: false}).setView([41.608671, 0.6294213], 6);
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'edupala.com © Angular LeafLet',
     }).addTo(this.map);
