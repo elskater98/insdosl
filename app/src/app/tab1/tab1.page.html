@@ -13,7 +13,40 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="mapId" style="width: 100%; height: 100%">
+  <ion-modal [isOpen]="isModalOpen" trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>New geo-point</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="stacked">Set geo-point name</ion-label>
+          <ion-input type="text" placeholder="New Point" [(ngModel)]="name"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Lat</ion-label>
+          <ion-input [disabled]=true type="text" [(ngModel)]="lat"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Long</ion-label>
+          <ion-input [disabled]=true type="text" [(ngModel)]="long"></ion-input>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <div id="mapId" style="width: 100%; height: 95%">
   </div>
+  <ion-button (click)="currentLocation();setOpen(true)" [strong]="true"> I'm Here!</ion-button>
 
 </ion-content>

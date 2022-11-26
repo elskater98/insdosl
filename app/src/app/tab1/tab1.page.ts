@@ -1,7 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import * as Leaflet from 'leaflet';
-import {LatLng, latLng, LatLngExpression} from "leaflet";
-import {logoHackernews, options} from "ionicons/icons";
+import {IonModal} from '@ionic/angular';
+import {OverlayEventDetail} from '@ionic/core/components';
+import {Geolocation} from "@ionic-native/geolocation/ngx";
+
 
 @Component({
   selector: 'app-tab1',
@@ -9,15 +11,64 @@ import {logoHackernews, options} from "ionicons/icons";
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit, OnDestroy {
-  map: Leaflet.Map | any;
+  constructor(public geo: Geolocation) {
+  }
 
-  constructor() {
+  map: Leaflet.Map | any;
+  @ViewChild(IonModal) modal: any;
+
+  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
+  name: string = "";
+  lat: number = 0;
+  long: number = 0;
+
+  isModalOpen = false;
+
+  currentLocation() {
+    this.geo.getCurrentPosition().then(r => {
+      console.log(r)
+      this.lat = r.coords.latitude
+      this.long = r.coords.longitude
+    }).catch(err => console.log(err))
+  }
+
+  resetFields() {
+    this.name = "";
+    this.currentLocation();
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+
+    if (!isOpen) {
+      this.resetFields()
+    }
+
+  }
+
+  cancel() {
+    this.modal.dismiss(null, 'cancel');
+    this.setOpen(false);
+  }
+
+  confirm() {
+    this.modal.dismiss(this.name, 'confirm');
+    this.setOpen(false)
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+    if (ev.detail.role === 'confirm') {
+      this.message = `Hello, ${ev.detail.data}!`;
+    }
+    this.setOpen(false)
   }
 
   ngOnInit() {
   }
 
   ionViewDidEnter() {
+    this.currentLocation()
     this.leafletMap();
 
     // TODO: GET DATA FROM API
@@ -34,11 +85,12 @@ export class Tab1Page implements OnInit, OnDestroy {
       Leaflet.polyline(i.geom, {color: 'red'}).addTo(this.map);
     })
 
-    this.map.on('dblclick',()=>{
-      console.log("tetona")
+    this.map.on('dblclick', (event: any) => {
+      this.setOpen(true);
+      let latlng = event['latlng']
+      this.lat = latlng['lat']
+      this.long = latlng['lng']
     })
-
-
   }
 
   leafletMap() {
