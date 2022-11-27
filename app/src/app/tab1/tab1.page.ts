@@ -85,7 +85,7 @@ export class Tab1Page implements OnInit, OnDestroy {
 
     this.geoService.getCanalization().subscribe((res) => {
       res.map((i: any) => {
-        Leaflet.polyline(i.geom.coordinates, {color: 'red'}).addTo(this.map)
+        Leaflet.polyline(i.geom.coordinates, {color: 'green'}).addTo(this.map)
       })
     })
 
