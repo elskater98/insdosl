@@ -36,13 +36,13 @@ export class Tab1Page implements OnInit, OnDestroy {
   currentPhoto() {
     this.geo.getCurrentPosition().then(r => {
       const coords = {
-        'latitude': r.coords.latitude,
-        'longitude': r.coords.longitude,
+        'latitude': this.lat,
+        'longitude': this.long,
         'description': this.name
       };
       this.PhotoService.addNewToGallery(coords);
     }).catch(err => console.log(err))
-    
+    this.setOpen(false);
   }
 
   resetFields() {
@@ -104,13 +104,14 @@ export class Tab1Page implements OnInit, OnDestroy {
 
     this.geoService.getPoints().subscribe((res) => {
       res.map((i: any) => {
+        var photoImg = '<img src="'+i.photo+'" height="150px" width="150px"/>';
         let c = Leaflet.circle(i.geom.coordinates, {
           color: 'red',
           fillColor: '#f03',
           fillOpacity: 0.5,
           radius: 10
         }).addTo(this.map)
-        c.bindPopup(i.description)
+        if (i.photo != "") { c.bindPopup(photoImg) } else { c.bindPopup(i.description) }
       })
     })
 
@@ -123,7 +124,7 @@ export class Tab1Page implements OnInit, OnDestroy {
   }
 
   leafletMap() {
-    this.map = Leaflet.map('mapId',).setView([41.608671, 0.6294213], 6);
+    this.map = Leaflet.map('mapId', {attributionControl: false}).setView([41.608671, 0.6294213], 6).setZoom(8);
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'edupala.com © Angular LeafLet',
     }).addTo(this.map);
