@@ -21,6 +21,7 @@ export class Tab1Page implements OnInit, OnDestroy {
 
   message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
   name: string = "";
+  sensor_type: string = "Sensor";
   lat: number = 0;
   long: number = 0;
 
@@ -47,6 +48,7 @@ export class Tab1Page implements OnInit, OnDestroy {
 
   resetFields() {
     this.name = "";
+    this.sensor_type = "Sensor";
     this.currentLocation();
   }
 
@@ -68,7 +70,10 @@ export class Tab1Page implements OnInit, OnDestroy {
     this.geoService.create({
       longitude: this.long, latitude: this.lat,
       description: this.name,
-      photo: ""
+      photo: "",
+      type: this.sensor_type
+    }).subscribe((res) => {
+      console.log(res)
     });
     let c = Leaflet.circle([this.lat, this.long], {
       color: 'red',
@@ -76,7 +81,7 @@ export class Tab1Page implements OnInit, OnDestroy {
       fillOpacity: 0.5,
       radius: 10
     }).addTo(this.map)
-    c.bindPopup(this.name).openPopup()
+    c.bindPopup(this.name + " " + this.sensor_type).openPopup()
     this.setOpen(false)
   }
 
@@ -98,20 +103,24 @@ export class Tab1Page implements OnInit, OnDestroy {
     this.geoService.getCanalization().subscribe((res) => {
       res.map((i: any) => {
         let p = Leaflet.polyline(i.geom.coordinates, {color: 'green'}).addTo(this.map)
-        p.bindPopup(i.description)
+        p.bindPopup(i.description + " " + i.type)
       })
     })
 
     this.geoService.getPoints().subscribe((res) => {
       res.map((i: any) => {
-        var photoImg = '<img src="'+i.photo+'" height="150px" width="150px"/>';
+        var photoImg = '<img src="' + i.photo + '" height="150px" width="150px"/>';
         let c = Leaflet.circle(i.geom.coordinates, {
           color: 'red',
           fillColor: '#f03',
           fillOpacity: 0.5,
           radius: 10
         }).addTo(this.map)
-        if (i.photo != "") { c.bindPopup(photoImg) } else { c.bindPopup(i.description) }
+        if (i.photo != "") {
+          c.bindPopup(photoImg)
+        } else {
+          c.bindPopup(i.description +" "+ i.type)
+        }
       })
     })
 

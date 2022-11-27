@@ -25,6 +25,11 @@
         </ion-item>
 
         <ion-item>
+          <ion-label position="stacked">Sensor type</ion-label>
+          <ion-input type="text" placeholder="New Point" [(ngModel)]="sensor_type"></ion-input>
+        </ion-item>
+
+        <ion-item>
           <ion-label position="stacked">Lat</ion-label>
           <ion-input [disabled]=true type="text" [(ngModel)]="lat"></ion-input>
         </ion-item>
