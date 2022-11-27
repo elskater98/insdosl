@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Directory, Filesystem } from '@capacitor/filesystem';
+import {environment} from "../../environments/environment";
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
+
+  private url = environment.urlConf;
 
   constructor(public http: HttpClient) { }
 
@@ -53,7 +57,7 @@ export class PhotoService {
       "photo": blob
     }
 
-    this.http.post("https://pondere.es:8004/rd008", postData, httpOptions)
+    this.http.post(this.url+"/rd008", postData, httpOptions)
       .subscribe(data => {
         console.log(data);
        }, error => {
