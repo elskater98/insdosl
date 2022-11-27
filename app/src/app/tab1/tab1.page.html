@@ -6,11 +6,15 @@
       <ion-header>
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="cancel()">Cancel</ion-button>
+            <ion-button (click)="cancel()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
           </ion-buttons>
           <ion-title>New geo-point</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirm()" [strong]="true">
+              <ion-icon name="checkmark"></ion-icon>
+            </ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -29,6 +33,11 @@
           <ion-label position="stacked">Long</ion-label>
           <ion-input [disabled]=true type="text" [(ngModel)]="long"></ion-input>
         </ion-item>
+        <ion-fab slot="fixed" vertical="bottom" horizontal="end" style="margin-right: 20px; margin-bottom: 20px">
+          <ion-fab-button>
+            <ion-icon name="camera" (click)="currentPhoto()"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
       </ion-content>
     </ng-template>
   </ion-modal>

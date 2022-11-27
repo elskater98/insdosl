@@ -4,6 +4,7 @@ import {IonModal} from '@ionic/angular';
 import {OverlayEventDetail} from '@ionic/core/components';
 import {Geolocation} from "@ionic-native/geolocation/ngx";
 import {GeoService} from "../services/geo.service";
+import {PhotoService} from "../services/photo.service";
 
 
 @Component({
@@ -12,7 +13,7 @@ import {GeoService} from "../services/geo.service";
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit, OnDestroy {
-  constructor(private geo: Geolocation, private geoService: GeoService) {
+  constructor(private geo: Geolocation, private geoService: GeoService, private PhotoService: PhotoService) {
   }
 
   map: Leaflet.Map | any;
@@ -27,10 +28,21 @@ export class Tab1Page implements OnInit, OnDestroy {
 
   currentLocation() {
     this.geo.getCurrentPosition().then(r => {
-      console.log(r)
       this.lat = r.coords.latitude
       this.long = r.coords.longitude
     }).catch(err => console.log(err))
+  }
+
+  currentPhoto() {
+    this.geo.getCurrentPosition().then(r => {
+      const coords = {
+        'latitude': r.coords.latitude,
+        'longitude': r.coords.longitude,
+        'description': this.name
+      };
+      this.PhotoService.addNewToGallery(coords);
+    }).catch(err => console.log(err))
+    
   }
 
   resetFields() {

@@ -15,7 +15,8 @@ export class PhotoService {
 
   private coords = {
     latitude: 0,
-    longitude: 0
+    longitude: 0,
+    description: ""
   };
 
   constructor(public http: HttpClient) { }
@@ -60,6 +61,7 @@ export class PhotoService {
     let postData = {
       "latitude": this.coords.latitude,
       "longitude": this.coords.longitude,
+      "desciption": this.coords.description || "",
       "photo": blob
     }
 

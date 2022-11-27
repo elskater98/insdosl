@@ -16,14 +16,18 @@ export class CameraPage implements OnInit, OnDestroy {
   constructor(public photoService: PhotoService, private geolocation: Geolocation, private geoService: GeoService) {
   }
 
-  addPhotoToGallery() {
-    this.geolocation.getCurrentPosition().then((res) => {
-      const coords = {
-        longitude: res.coords.longitude,
-        latitude: res.coords.latitude
-      };
+  addPhotoToGallery(coords = null) {
+    if (coords == null) {
+      this.geolocation.getCurrentPosition().then((res) => {
+        const coords = {
+          longitude: res.coords.longitude,
+          latitude: res.coords.latitude
+        };
+        this.photoService.addNewToGallery(coords);
+      }).catch(err => console.log(err.toString()));
+    } else {
       this.photoService.addNewToGallery(coords);
-    }).catch(err => console.log(err.toString()))
+    }
   }
 
   ngOnDestroy(): void {
