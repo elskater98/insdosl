@@ -35,14 +35,12 @@ export class Tab1Page implements OnInit, OnDestroy {
   }
 
   currentPhoto() {
-    this.geo.getCurrentPosition().then(r => {
-      const coords = {
-        'latitude': this.lat,
-        'longitude': this.long,
-        'description': this.name
-      };
-      this.PhotoService.addNewToGallery(coords);
-    }).catch(err => console.log(err))
+    const coords = {
+      'latitude': this.lat,
+      'longitude': this.long,
+      'description': this.name
+    };
+    this.PhotoService.addNewToGallery(coords);
     this.setOpen(false);
   }
 

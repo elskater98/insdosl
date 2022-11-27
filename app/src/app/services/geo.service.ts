@@ -27,7 +27,7 @@ export class GeoService {
         'Content-Type': 'application/json'
       })
     };
-    return this.http.get(this.url + '/rd008', httpOptions);
+    return this.http.get(this.url + 'rd008', httpOptions);
   }
 
   create(data: any): Observable<any> {
@@ -37,6 +37,6 @@ export class GeoService {
         'Content-Type': 'application/json; charset=utf-8',
       })
     };
-    return this.http.post(this.url + '/rd008', data, httpOptions);
+    return this.http.post(this.url + 'rd008', data, httpOptions);
   }
 }

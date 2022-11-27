@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  urlConf: 'http://pondere.es:8004'
+  urlConf: 'https://tsbot.pondere.es/'
 };
 
 /*
