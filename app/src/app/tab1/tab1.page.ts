@@ -3,6 +3,7 @@ import * as Leaflet from 'leaflet';
 import {IonModal} from '@ionic/angular';
 import {OverlayEventDetail} from '@ionic/core/components';
 import {Geolocation} from "@ionic-native/geolocation/ngx";
+import {GeoService} from "../services/geo.service";
 
 
 @Component({
@@ -11,7 +12,7 @@ import {Geolocation} from "@ionic-native/geolocation/ngx";
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit, OnDestroy {
-  constructor(public geo: Geolocation) {
+  constructor(private geo: Geolocation, private geoService: GeoService) {
   }
 
   map: Leaflet.Map | any;
@@ -43,7 +44,6 @@ export class Tab1Page implements OnInit, OnDestroy {
     if (!isOpen) {
       this.resetFields()
     }
-
   }
 
   cancel() {
@@ -53,6 +53,18 @@ export class Tab1Page implements OnInit, OnDestroy {
 
   confirm() {
     this.modal.dismiss(this.name, 'confirm');
+    this.geoService.create({
+      longitude: this.long, latitude: this.lat,
+      description: this.name,
+      photo: ""
+    }).subscribe((res) => {
+      Leaflet.circle([this.lat, this.long], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5,
+        radius: 500
+      }).addTo(this.map)
+    })
     this.setOpen(false)
   }
 
@@ -71,18 +83,21 @@ export class Tab1Page implements OnInit, OnDestroy {
     this.currentLocation()
     this.leafletMap();
 
-    // TODO: GET DATA FROM API
-    const data = [
-      {
-        "id": "xxxx-d5e8-2620d32a-003a1b97-7d2bb7c4",
-        "geom": [[-0.1699227, 51.2323931], [-0.169954, 51.23241], [-0.170044, 51.232411]],
-        "element_type": "canalization",
-        "description": "NEW DUCT"
-      }
-    ]
+    this.geoService.getCanalization().subscribe((res) => {
+      res.map((i: any) => {
+        Leaflet.polyline(i.geom.coordinates, {color: 'red'}).addTo(this.map)
+      })
+    })
 
-    data.map((i: any) => {
-      Leaflet.polyline(i.geom, {color: 'red'}).addTo(this.map);
+    this.geoService.getPoints().subscribe((res) => {
+      res.map((i: any) => {
+        Leaflet.circle(i.geom.coordinates, {
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0.5,
+          radius: 500
+        }).addTo(this.map)
+      })
     })
 
     this.map.on('dblclick', (event: any) => {

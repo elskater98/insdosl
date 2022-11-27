@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  urlConf: 'http://localhost:3000/'
+  urlConf: 'http://pondere.es:8004'
 };
 
 /*
