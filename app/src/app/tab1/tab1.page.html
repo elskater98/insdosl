@@ -1,12 +1,5 @@
-<ion-header [translucent]="true">
-</ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Geo</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
   <ion-modal [isOpen]="isModalOpen" trigger="open-modal" (willDismiss)="onWillDismiss($event)">
     <ng-template>
@@ -40,9 +33,13 @@
     </ng-template>
   </ion-modal>
 
-  <ion-button (click)="currentLocation();setOpen(true)" [strong]="true"> I'm Here!</ion-button>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="currentLocation();setOpen(true)">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
-  <div id="mapId" style="width: 100%; height: 95%">
+  <div id="mapId" style="width: 100%; height: 100%">
   </div>
 
 </ion-content>
