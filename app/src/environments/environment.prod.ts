@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  urlConf: 'http://pondere.es:8004'
 };
