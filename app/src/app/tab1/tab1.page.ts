@@ -69,14 +69,14 @@ export class Tab1Page implements OnInit, OnDestroy {
       longitude: this.long, latitude: this.lat,
       description: this.name,
       photo: ""
-    }).subscribe((res) => {
-      Leaflet.circle([this.lat, this.long], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 10
-      }).addTo(this.map)
-    })
+    });
+    let c = Leaflet.circle([this.lat, this.long], {
+      color: 'red',
+      fillColor: '#f03',
+      fillOpacity: 0.5,
+      radius: 10
+    }).addTo(this.map)
+    c.bindPopup(this.name).openPopup()
     this.setOpen(false)
   }
 
@@ -97,18 +97,20 @@ export class Tab1Page implements OnInit, OnDestroy {
 
     this.geoService.getCanalization().subscribe((res) => {
       res.map((i: any) => {
-        Leaflet.polyline(i.geom.coordinates, {color: 'green'}).addTo(this.map)
+        let p = Leaflet.polyline(i.geom.coordinates, {color: 'green'}).addTo(this.map)
+        p.bindPopup(i.description)
       })
     })
 
     this.geoService.getPoints().subscribe((res) => {
       res.map((i: any) => {
-        Leaflet.circle(i.geom.coordinates, {
+        let c = Leaflet.circle(i.geom.coordinates, {
           color: 'red',
           fillColor: '#f03',
           fillOpacity: 0.5,
           radius: 10
         }).addTo(this.map)
+        c.bindPopup(i.description)
       })
     })
 
@@ -121,7 +123,7 @@ export class Tab1Page implements OnInit, OnDestroy {
   }
 
   leafletMap() {
-    this.map = Leaflet.map('mapId', {attributionControl: false}).setView([41.608671, 0.6294213], 6);
+    this.map = Leaflet.map('mapId',).setView([41.608671, 0.6294213], 6);
     Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'edupala.com © Angular LeafLet',
     }).addTo(this.map);
