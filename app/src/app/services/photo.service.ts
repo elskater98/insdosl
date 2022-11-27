@@ -13,9 +13,15 @@ export class PhotoService {
 
   private url = environment.urlConf;
 
+  private coords = {
+    latitude: 0,
+    longitude: 0
+  };
+
   constructor(public http: HttpClient) { }
 
-  public async addNewToGallery() {
+  public async addNewToGallery(coords: any) {
+    this.coords = coords;
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri, // file-based data; provides best performance
       source: CameraSource.Camera, // automatically take a new photo with the camera
@@ -52,8 +58,8 @@ export class PhotoService {
       };
 
     let postData = {
-      "latitude": 1.123,
-      "longitude": 2.12213,
+      "latitude": this.coords.latitude,
+      "longitude": this.coords.longitude,
       "photo": blob
     }
 
