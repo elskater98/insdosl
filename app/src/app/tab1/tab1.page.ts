@@ -62,7 +62,7 @@ export class Tab1Page implements OnInit, OnDestroy {
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.5,
-        radius: 500
+        radius: 10
       }).addTo(this.map)
     })
     this.setOpen(false)
@@ -95,7 +95,7 @@ export class Tab1Page implements OnInit, OnDestroy {
           color: 'red',
           fillColor: '#f03',
           fillOpacity: 0.5,
-          radius: 500
+          radius: 10
         }).addTo(this.map)
       })
     })
